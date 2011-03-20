@@ -1,0 +1,14 @@
+I'm using this project to learn VHDL. There's nothing Earth-shattering here and I'm positive everything in here has been done millions of times before. That being said...
+
+This project defines some VHDL components: a seven-segment decoder, a rotary encoder, and a 4-digit led display. I'm using the following parts from SparkFun
+
+4-digit 7-segment display - this is blue but using other colors as well
+	http://www.sparkfun.com/products/9481
+Rotary Encoder
+	http://www.sparkfun.com/products/9117
+	http://www.sparkfun.com/products/8828
+
+This is all being built with Xilinx WebPack and the wonderful Papilio 1
+	http://www.gadgetfactory.net/
+	http://papilio.cc/
+

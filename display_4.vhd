@@ -70,9 +70,9 @@ begin
 			
 			-- activate decimal point
 			if dpRegister(digit_index) = '1' then
-				dp <= '1';
-			else
 				dp <= '0';
+			else
+				dp <= '1';
 			end if;
 			
 			counter <= counter + 1;

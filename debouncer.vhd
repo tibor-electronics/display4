@@ -6,29 +6,57 @@ entity Debouncer is
 		clock: in std_logic;
 		reset: in std_logic;
 		d_in: in std_logic;
-		q_out: out std_logic
+		d_out: out std_logic
 	);
 end Debouncer;
 
 architecture behavioral of Debouncer is
-	signal q1, q2, q3 : std_logic;
+	signal sample : std_logic;
+	signal sync : std_logic_vector(1 downto 0);
+	constant PULSE_COUNT_MAX : integer := 20;
+	signal pulse_counter : integer range 0 to PULSE_COUNT_MAX;
 begin
-	process(clock)
+	sample_clock: process(clock)
+		constant SAMPLE_TICK_MAX : integer := (32000000 / 2000) - 1; --500 us
+		variable tick_counter : integer range 0 to SAMPLE_TICK_MAX;
 	begin
 		if clock'event and clock = '1' then
 			if reset = '1' then
-				q1 <= '0';
-				q2 <= '0';
-				q3 <= '0'; 
+				sample <= '0';
+				tick_counter := 0;
+			elsif tick_counter = SAMPLE_TICK_MAX then
+				sample <= '1';
+				tick_counter := 0;
 			else
-				q1 <= d_in;
-				q2 <= q1;
-				q3 <= q2;
+				sample <= '0';
+				tick_counter := tick_counter + 1;
 			end if;
 		end if;
 	end process;
-	 
-	q_out <= q1 and q2 and (not q3);
+	
+	debounce: process(clock)
+	begin
+		if clock'event and clock = '1' then
+			if reset = '1' then
+				sync <= (others => '0');
+				pulse_counter <= 0;
+				d_out <= '0';
+			else
+				sync <= sync(0) & d_in;
+				
+				if sync(1) = '0' then
+					pulse_counter <= 0;
+					d_out <= '0';
+				elsif sample = '1' then
+					if pulse_counter = PULSE_COUNT_MAX then
+						d_out <= '1';
+					else
+						pulse_counter <= pulse_counter + 1;
+					end if;
+				end if;
+			end if;
+		end if;
+	end process;
 
 end behavioral;
 

@@ -103,10 +103,11 @@
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1300662842" xil_pn:in_ck="246858077395172754" xil_pn:name="TRANEXT_xstsynthesize_spartan3e" xil_pn:prop_ck="-8754103493933202230" xil_pn:start_ts="1300662834">
+    <transform xil_pn:end_ts="1300759485" xil_pn:in_ck="-7174217548243319303" xil_pn:name="TRANEXT_xstsynthesize_spartan3e" xil_pn:prop_ck="-8754103493933202230" xil_pn:start_ts="1300759478">
       <status xil_pn:value="SuccessfullyRun"/>
-      <status xil_pn:value="WarningsGenerated"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="OutputChanged"/>
       <outfile xil_pn:name="DisplayCounter.lso"/>
       <outfile xil_pn:name="DisplayCounter.ngc"/>
       <outfile xil_pn:name="DisplayCounter.ngr"/>
@@ -124,21 +125,20 @@
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1300662717" xil_pn:in_ck="6207148707893082576" xil_pn:name="TRANEXT_ngdbuild_FPGA" xil_pn:prop_ck="2084551840100198054" xil_pn:start_ts="1300662713">
+    <transform xil_pn:end_ts="1300759491" xil_pn:in_ck="6207148707893082576" xil_pn:name="TRANEXT_ngdbuild_FPGA" xil_pn:prop_ck="2084551840100198054" xil_pn:start_ts="1300759487">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
-      <status xil_pn:value="OutOfDateForInputs"/>
-      <status xil_pn:value="InputChanged"/>
       <outfile xil_pn:name="DisplayCounter.bld"/>
       <outfile xil_pn:name="DisplayCounter.ngd"/>
       <outfile xil_pn:name="DisplayCounter_ngdbuild.xrpt"/>
       <outfile xil_pn:name="_ngo"/>
       <outfile xil_pn:name="_xmsgs/ngdbuild.xmsgs"/>
     </transform>
-    <transform xil_pn:end_ts="1300662721" xil_pn:in_ck="6207148707893082577" xil_pn:name="TRANEXT_map_spartan3" xil_pn:prop_ck="-8535960543883491901" xil_pn:start_ts="1300662717">
+    <transform xil_pn:end_ts="1300759496" xil_pn:in_ck="6207148707893082577" xil_pn:name="TRANEXT_map_spartan3" xil_pn:prop_ck="-8535960543883491901" xil_pn:start_ts="1300759491">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
-      <status xil_pn:value="OutOfDateForPredecessor"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="OutputChanged"/>
       <outfile xil_pn:name="DisplayCounter.pcf"/>
       <outfile xil_pn:name="DisplayCounter_map.map"/>
       <outfile xil_pn:name="DisplayCounter_map.mrp"/>
@@ -149,11 +149,9 @@
       <outfile xil_pn:name="DisplayCounter_usage.xml"/>
       <outfile xil_pn:name="_xmsgs/map.xmsgs"/>
     </transform>
-    <transform xil_pn:end_ts="1300662733" xil_pn:in_ck="-3666542511105685142" xil_pn:name="TRANEXT_par_spartan3" xil_pn:prop_ck="3129755442398015208" xil_pn:start_ts="1300662721">
-      <status xil_pn:value="FailedRun"/>
-      <status xil_pn:value="WarningsGenerated"/>
+    <transform xil_pn:end_ts="1300759516" xil_pn:in_ck="-3666542511105685142" xil_pn:name="TRANEXT_par_spartan3" xil_pn:prop_ck="3129755442398015208" xil_pn:start_ts="1300759496">
+      <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
-      <status xil_pn:value="OutOfDateForPredecessor"/>
       <outfile xil_pn:name="DisplayCounter.ncd"/>
       <outfile xil_pn:name="DisplayCounter.pad"/>
       <outfile xil_pn:name="DisplayCounter.par"/>
@@ -165,14 +163,9 @@
       <outfile xil_pn:name="DisplayCounter_par.xrpt"/>
       <outfile xil_pn:name="_xmsgs/par.xmsgs"/>
     </transform>
-    <transform xil_pn:end_ts="1300662259" xil_pn:in_ck="5136882298106996409" xil_pn:name="TRANEXT_bitFile_spartan3e" xil_pn:prop_ck="287829442711806529" xil_pn:start_ts="1300662249">
+    <transform xil_pn:end_ts="1300759529" xil_pn:in_ck="5136882298106996409" xil_pn:name="TRANEXT_bitFile_spartan3e" xil_pn:prop_ck="287829442711806529" xil_pn:start_ts="1300759518">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
-      <status xil_pn:value="OutOfDateForInputs"/>
-      <status xil_pn:value="OutOfDateForPredecessor"/>
-      <status xil_pn:value="OutOfDateForOutputs"/>
-      <status xil_pn:value="InputChanged"/>
-      <status xil_pn:value="OutputChanged"/>
       <outfile xil_pn:name="DisplayCounter.ut"/>
       <outfile xil_pn:name="_xmsgs/bitgen.xmsgs"/>
       <outfile xil_pn:name="displaycounter.bgn"/>
@@ -182,15 +175,18 @@
       <outfile xil_pn:name="webtalk.log"/>
       <outfile xil_pn:name="webtalk_pn.xml"/>
     </transform>
-    <transform xil_pn:end_ts="1300662249" xil_pn:in_ck="6207148707893082445" xil_pn:name="TRAN_postRouteTrce" xil_pn:prop_ck="445577401284416186" xil_pn:start_ts="1300662246">
+    <transform xil_pn:end_ts="1300759516" xil_pn:in_ck="6207148707893082445" xil_pn:name="TRAN_postRouteTrce" xil_pn:prop_ck="445577401284416186" xil_pn:start_ts="1300759513">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
-      <status xil_pn:value="OutOfDateForInputs"/>
-      <status xil_pn:value="OutOfDateForPredecessor"/>
-      <status xil_pn:value="InputChanged"/>
       <outfile xil_pn:name="DisplayCounter.twr"/>
       <outfile xil_pn:name="DisplayCounter.twx"/>
       <outfile xil_pn:name="_xmsgs/trce.xmsgs"/>
+    </transform>
+    <transform xil_pn:end_ts="1300673473" xil_pn:in_ck="6207148707893082577" xil_pn:name="TRAN_createTimingConstraints" xil_pn:start_ts="1300673473">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForInputs"/>
+      <status xil_pn:value="InputChanged"/>
     </transform>
   </transforms>
 

@@ -40,7 +40,7 @@ architecture Behavioral of DisplayCounter is
 			clock: in std_logic;
 			reset: in std_logic;
 			d_in: in std_logic;
-			q_out: out std_logic
+			d_out: out std_logic
 		);
 	end component;
 	
@@ -48,7 +48,9 @@ architecture Behavioral of DisplayCounter is
 	signal up, down: std_logic;
 	signal enable_write: std_logic := '1';
 	signal active_digit: std_logic_vector(3 downto 0) := "1000";
-	signal PB_debounced: std_logic := '1';
+	signal last_debounced: std_logic := '0';
+	signal current_debounced: std_logic := '0';
+	signal PB_debounced: std_logic := '0';
 begin
 	-- create rotary decoder
 	r: Rotary port map(
@@ -75,20 +77,22 @@ begin
 		clock => clock,
 		reset => PB,
 		d_in => not PB,
-		q_out => PB_debounced
+		d_out => PB_debounced
 	);
 	
 	-- update count based on rotary output
 	update_counter: process(clock, up, down, PB, active_digit)
 	begin
 		if clock'event and clock = '1' then
+			last_debounced <= current_debounced;
+			current_debounced <= PB_debounced;
 			if down = '1' then
 				counter <= counter - 1;
 				enable_write <= '1';
 			elsif up = '1' then
 				counter <= counter + 1;
 				enable_write <= '1';
-			elsif PB_debounced = '1' then
+			elsif last_debounced = '0' and current_debounced = '1' then
 				case active_digit is
 					when "0000" => active_digit <= "0001";
 					when "0001" => active_digit <= "0010";

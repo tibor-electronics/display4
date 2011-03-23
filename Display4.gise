@@ -106,7 +106,9 @@
     <transform xil_pn:end_ts="1300816292" xil_pn:in_ck="-7174217548243319303" xil_pn:name="TRANEXT_xstsynthesize_spartan3e" xil_pn:prop_ck="-8754103493933202230" xil_pn:start_ts="1300816284">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForInputs"/>
       <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="InputChanged"/>
       <status xil_pn:value="OutputChanged"/>
       <outfile xil_pn:name="DisplayCounter.lso"/>
       <outfile xil_pn:name="DisplayCounter.ngc"/>
@@ -128,6 +130,7 @@
     <transform xil_pn:end_ts="1300816299" xil_pn:in_ck="6207148707893082576" xil_pn:name="TRANEXT_ngdbuild_FPGA" xil_pn:prop_ck="2084551840100198054" xil_pn:start_ts="1300816295">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
       <outfile xil_pn:name="DisplayCounter.bld"/>
       <outfile xil_pn:name="DisplayCounter.ngd"/>
       <outfile xil_pn:name="DisplayCounter_ngdbuild.xrpt"/>
@@ -137,6 +140,7 @@
     <transform xil_pn:end_ts="1300816303" xil_pn:in_ck="6207148707893082577" xil_pn:name="TRANEXT_map_spartan3" xil_pn:prop_ck="-8535960543883491901" xil_pn:start_ts="1300816299">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
       <status xil_pn:value="OutOfDateForOutputs"/>
       <status xil_pn:value="OutputChanged"/>
       <outfile xil_pn:name="DisplayCounter.pcf"/>
@@ -152,6 +156,7 @@
     <transform xil_pn:end_ts="1300816323" xil_pn:in_ck="-3666542511105685142" xil_pn:name="TRANEXT_par_spartan3" xil_pn:prop_ck="3129755442398015208" xil_pn:start_ts="1300816303">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
       <outfile xil_pn:name="DisplayCounter.ncd"/>
       <outfile xil_pn:name="DisplayCounter.pad"/>
       <outfile xil_pn:name="DisplayCounter.par"/>
@@ -166,6 +171,7 @@
     <transform xil_pn:end_ts="1300816337" xil_pn:in_ck="5136882298106996409" xil_pn:name="TRANEXT_bitFile_spartan3e" xil_pn:prop_ck="287829442711806529" xil_pn:start_ts="1300816323">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
       <outfile xil_pn:name="DisplayCounter.ut"/>
       <outfile xil_pn:name="_xmsgs/bitgen.xmsgs"/>
       <outfile xil_pn:name="displaycounter.bgn"/>
@@ -178,6 +184,7 @@
     <transform xil_pn:end_ts="1300816323" xil_pn:in_ck="6207148707893082445" xil_pn:name="TRAN_postRouteTrce" xil_pn:prop_ck="445577401284416186" xil_pn:start_ts="1300816320">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
       <outfile xil_pn:name="DisplayCounter.twr"/>
       <outfile xil_pn:name="DisplayCounter.twx"/>
       <outfile xil_pn:name="_xmsgs/trce.xmsgs"/>
@@ -186,6 +193,7 @@
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
       <status xil_pn:value="OutOfDateForInputs"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
       <status xil_pn:value="InputChanged"/>
     </transform>
   </transforms>

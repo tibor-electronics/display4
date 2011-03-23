@@ -1,3 +1,10 @@
+--
+-- Copyright 2011, Kevin Lindsey
+-- See LICENSE file for licensing information
+--
+-- Based on code from:
+-- http://www.labbookpages.co.uk/electronics/debounce.html
+--
 library ieee;
 use ieee.std_logic_1164.all;
 

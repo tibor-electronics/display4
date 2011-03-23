@@ -1,3 +1,10 @@
+--
+-- Copyright 2011, Kevin Lindsey
+-- See LICENSE file for licensing information
+--
+-- Based on Ben Jordon's code in this forum post:
+-- http://forum.allaboutcircuits.com/showthread.php?t=23344
+--
 library ieee;
 use ieee.std_logic_1164.all;
 

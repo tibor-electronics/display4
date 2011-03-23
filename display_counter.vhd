@@ -1,3 +1,7 @@
+--
+-- Copyright 2011, Kevin Lindsey
+-- See LICENSE file for licensing information
+--
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_unsigned.all;

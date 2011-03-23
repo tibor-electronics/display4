@@ -9,6 +9,9 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 entity Debouncer is
+	generic(
+		CLOCK_FREQUENCY: positive := 32_000_000
+	);
 	port(
 		clock: in std_logic;
 		reset: in std_logic;
@@ -24,7 +27,7 @@ architecture behavioral of Debouncer is
 	signal pulse_counter : integer range 0 to PULSE_COUNT_MAX;
 begin
 	sample_clock: process(clock)
-		constant SAMPLE_TICK_MAX : integer := (32000000 / 2000) - 1; --500 us
+		constant SAMPLE_TICK_MAX : integer := (CLOCK_FREQUENCY / 2000) - 1; --500 us
 		variable tick_counter : integer range 0 to SAMPLE_TICK_MAX;
 	begin
 		if clock'event and clock = '1' then

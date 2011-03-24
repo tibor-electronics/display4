@@ -8,7 +8,8 @@ use ieee.std_logic_unsigned.all;
 
 entity Display4 is
 	generic(
-		CLOCK_FREQUENCY: positive := 32_000_000
+		CLOCK_FREQUENCY: positive := 32_000_000;
+		DIGIT_COUNT: positive := 4
 	);
 	port(
 		clock: in std_logic;
@@ -30,18 +31,43 @@ architecture behavioral of Display4 is
 		);
 	end component;
 	
-	signal dataRegister: std_logic_vector(15 downto 0) := (others => '0');
-	signal dpRegister: std_logic_vector(3 downto 0) := (others => '0');
-	signal currentNumber: std_logic_vector(3 downto 0) := "0000";
-	signal counter: std_logic_vector(18 downto 0) := (others => '0');
-begin
-	ss: SevenSegment port map(
-		clock => clock,
-		num => currentNumber,
-		segments => segments
-	);
+	component Timer is
+		generic(
+			CLOCK_FREQUENCY: positive;
+			TIMER_FREQUENCY: positive
+		);
+		port(
+			clock: in std_logic;
+			reset: in std_logic;
+			tick: out std_logic
+		);
+	end component;
 	
-	set_register: process(clock, DWE)
+	signal dataRegister: std_logic_vector(DIGIT_COUNT * 4 - 1 downto 0) := (others => '0');
+	signal dpRegister: std_logic_vector(DIGIT_COUNT - 1 downto 0) := (others => '0');
+	signal currentNumber: std_logic_vector(3 downto 0) := "0000";
+	signal advance_tick: std_logic := '0';
+	signal digit_index: integer range 0 to DIGIT_COUNT - 1;
+begin
+	ss: SevenSegment
+		port map(
+			clock => clock,
+			num => currentNumber,
+			segments => segments
+		);
+	
+	advance_timer: Timer
+		generic map(
+			CLOCK_FREQUENCY => CLOCK_FREQUENCY,
+			TIMER_FREQUENCY => 1000 * (DIGIT_COUNT + 1)
+		)
+		port map(
+			clock => clock,
+			reset => '0',
+			tick => advance_tick
+		);
+	
+	set_registers: process(clock, DWE)
 	begin
 		if clock'event and clock = '1' then
 			if DWE = '1' then
@@ -51,17 +77,22 @@ begin
 		end if;
 	end process;
 	
-	display: process(clock)
-		variable digit_index, slice_index : integer;
+	update_digit_index: process(clock)
+	begin
+		if clock'event and clock = '1' then
+			if advance_tick = '1' then
+				digit_index <= digit_index + 1;
+			end if;
+		end if;
+	end process;
+	
+	display: process(clock, digit_index)
 		variable top: integer;
 	begin
 		if clock'event and clock = '1' then
 			-- digits are numbered left-to-right, but we need them right-to-left
-			digit_index := conv_integer(counter(18 downto 17));
-			slice_index := 3 - digit_index;
-			
 			-- calculate segment offsets based on (corrected) digit index
-			top := 4 * slice_index + 3;
+			top := 4 * (3 - digit_index) + 3;
 			
 			-- grab slice for the current digit
 			currentNumber <= dataRegister(top downto top - 3);
@@ -77,8 +108,6 @@ begin
 			
 			-- activate decimal point
 			dp <= not dpRegister(digit_index);
-			
-			counter <= counter + 1;
 		end if;
 	end process;
 

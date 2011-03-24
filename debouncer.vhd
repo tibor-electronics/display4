@@ -10,7 +10,9 @@ use ieee.std_logic_1164.all;
 
 entity Debouncer is
 	generic(
-		CLOCK_FREQUENCY: positive := 32_000_000
+		CLOCK_FREQUENCY: positive := 32_000_000;
+		SAMPLE_FREQUENCY: positive := 2000; -- 500us
+		SAMPLE_COUNT: positive := 20
 	);
 	port(
 		clock: in std_logic;
@@ -35,13 +37,12 @@ architecture behavioral of Debouncer is
 	
 	signal sample_tick : std_logic;
 	signal sync : std_logic_vector(1 downto 0);
-	constant PULSE_COUNT_MAX : integer := 20;
-	signal pulse_counter : integer range 0 to PULSE_COUNT_MAX;
+	signal sample_count : integer range 0 to SAMPLE_COUNT;
 begin
 	sample_clock: Timer
 		generic map(
 			CLOCK_FREQUENCY => CLOCK_FREQUENCY,
-			TIMER_FREQUENCY => 2000 -- 500us
+			TIMER_FREQUENCY => SAMPLE_FREQUENCY
 		)
 		port map(
 			clock => clock,
@@ -54,24 +55,22 @@ begin
 		if clock'event and clock = '1' then
 			if reset = '1' then
 				sync <= (others => '0');
-				pulse_counter <= 0;
+				sample_count <= 0;
 				d_out <= '0';
 			else
 				sync <= sync(0) & d_in;
 				
 				if sync(1) = '0' then
-					pulse_counter <= 0;
+					sample_count <= 0;
 					d_out <= '0';
 				elsif sample_tick = '1' then
-					if pulse_counter = PULSE_COUNT_MAX then
+					if sample_count = SAMPLE_COUNT then
 						d_out <= '1';
 					else
-						pulse_counter <= pulse_counter + 1;
+						sample_count <= sample_count + 1;
 					end if;
 				end if;
 			end if;
 		end if;
 	end process;
-
 end behavioral;
-

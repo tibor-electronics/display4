@@ -7,6 +7,9 @@ use ieee.std_logic_1164.all;
 use ieee.std_logic_unsigned.all;
 
 entity Display4 is
+	generic(
+		CLOCK_FREQUENCY: positive := 32_000_000
+	);
 	port(
 		clock: in std_logic;
 		DWE: in std_logic;
@@ -73,11 +76,7 @@ begin
 			end case;
 			
 			-- activate decimal point
-			if dpRegister(digit_index) = '1' then
-				dp <= '0';
-			else
-				dp <= '1';
-			end if;
+			dp <= not dpRegister(digit_index);
 			
 			counter <= counter + 1;
 		end if;

@@ -11,6 +11,7 @@ webtalk.log
 *_pad.csv
 *.drc
 *_webtalk.html
+isim.log
 *.lso
 *.ncd
 *.ngc

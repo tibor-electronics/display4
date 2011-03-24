@@ -21,28 +21,33 @@ entity Debouncer is
 end Debouncer;
 
 architecture behavioral of Debouncer is
-	signal sample : std_logic;
+	component Timer is
+		generic(
+			CLOCK_FREQUENCY: positive;
+			TIMER_FREQUENCY: positive
+		);
+		port(
+			clock: in std_logic;
+			reset: in std_logic;
+			tick: out std_logic
+		);
+	end component;
+	
+	signal sample_tick : std_logic;
 	signal sync : std_logic_vector(1 downto 0);
 	constant PULSE_COUNT_MAX : integer := 20;
 	signal pulse_counter : integer range 0 to PULSE_COUNT_MAX;
 begin
-	sample_clock: process(clock)
-		constant SAMPLE_TICK_MAX : integer := (CLOCK_FREQUENCY / 2000) - 1; --500 us
-		variable tick_counter : integer range 0 to SAMPLE_TICK_MAX;
-	begin
-		if clock'event and clock = '1' then
-			if reset = '1' then
-				sample <= '0';
-				tick_counter := 0;
-			elsif tick_counter = SAMPLE_TICK_MAX then
-				sample <= '1';
-				tick_counter := 0;
-			else
-				sample <= '0';
-				tick_counter := tick_counter + 1;
-			end if;
-		end if;
-	end process;
+	sample_clock: Timer
+		generic map(
+			CLOCK_FREQUENCY => CLOCK_FREQUENCY,
+			TIMER_FREQUENCY => 2000 -- 500us
+		)
+		port map(
+			clock => clock,
+			reset => reset,
+			tick => sample_tick
+		);
 	
 	debounce: process(clock)
 	begin
@@ -57,7 +62,7 @@ begin
 				if sync(1) = '0' then
 					pulse_counter <= 0;
 					d_out <= '0';
-				elsif sample = '1' then
+				elsif sample_tick = '1' then
 					if pulse_counter = PULSE_COUNT_MAX then
 						d_out <= '1';
 					else

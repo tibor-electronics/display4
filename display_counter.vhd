@@ -28,14 +28,17 @@ architecture Behavioral of DisplayCounter is
 	end component;
 	
 	component Display4 is
+		generic(
+			DIGIT_COUNT: positive
+		);
 		port(
 			clock: in std_logic;
 			DWE: in std_logic;
-			data: in std_logic_vector(15 downto 0);
-			dps: in std_logic_vector(3 downto 0);
+			data: in std_logic_vector(DIGIT_COUNT * 4 - 1 downto 0);
+			dps: in std_logic_vector(DIGIT_COUNT - 1 downto 0);
 			segments: out std_logic_vector(6 downto 0);
 			dp: out std_logic;
-			sel: out std_logic_vector(3 downto 0)
+			sel: out std_logic_vector(DIGIT_COUNT - 1 downto 0)
 		);
 	end component;
 	
@@ -57,32 +60,38 @@ architecture Behavioral of DisplayCounter is
 	signal PB_debounced: std_logic := '0';
 begin
 	-- create rotary decoder
-	r: Rotary port map(
-		clock => clock,
-		A => A,
-		B => B,
-		inc => up,
-		dec => down
-	);
+	r: Rotary
+		port map(
+			clock => clock,
+			A => A,
+			B => B,
+			inc => up,
+			dec => down
+		);
 	
 	-- create 4-digit display
-	d4: Display4 port map(
-		clock => clock,
-		DWE => enable_write,
-		data => counter,
-		dps => active_digit,
-		segments => segments,
-		dp => dp,
-		sel => sel
-	);
+	d4: Display4
+		generic map(
+			DIGIT_COUNT => 4
+		)
+		port map(
+			clock => clock,
+			DWE => enable_write,
+			data => counter,
+			dps => active_digit,
+			segments => segments,
+			dp => dp,
+			sel => sel
+		);
 	
 	-- create button debouncer
-	db: Debouncer port map(
-		clock => clock,
-		reset => PB,
-		d_in => not PB,
-		d_out => PB_debounced
-	);
+	db: Debouncer
+		port map(
+			clock => clock,
+			reset => PB,
+			d_in => not PB,
+			d_out => PB_debounced
+		);
 	
 	-- update count based on rotary output
 	update_counter: process(clock, up, down, PB, active_digit)

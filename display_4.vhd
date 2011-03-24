@@ -14,11 +14,11 @@ entity Display4 is
 	port(
 		clock: in std_logic;
 		DWE: in std_logic;
-		data: in std_logic_vector(15 downto 0);
-		dps: in std_logic_vector(3 downto 0);
+		data: in std_logic_vector(DIGIT_COUNT * 4 - 1 downto 0);
+		dps: in std_logic_vector(DIGIT_COUNT - 1 downto 0);
 		segments: out std_logic_vector(6 downto 0);
 		dp: out std_logic;
-		sel: out std_logic_vector(3 downto 0)
+		sel: out std_logic_vector(DIGIT_COUNT - 1 downto 0)
 	);
 end Display4;
 

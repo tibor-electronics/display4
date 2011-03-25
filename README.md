@@ -17,7 +17,8 @@ I haven't progressed to building libraries yet, but I do have a few re-usable co
 * A 7-Segment LED Decoder - This converts any 4-bit value to a hex digit. Note that decimal points are not handled in this layer
 * A 4-Digit LED Display - This uses the 7-Segment LED Decoder with a time multiplexer to manage the display of 4 LED digits. This component contains a register for the decimal points so each can be turned on individually.
 * A Rotary Decoder - This converts the output of a rotary switch into increment and decrement signals.
-* A Button Debouncer - This debounces the rather noisy rotary switch that I'm using. It uses a couple of flip-flops to (hopefully) avoid metastability coming from the button input. This is fed into a timing circuit which essentially turns on a signal after the button has been stable for about 500us.
+* A Button Debouncer - This debounces the rather noisy rotary push button that I'm using. It uses a couple of flip-flops to (hopefully) avoid metastability coming from the button input. This is fed into a timing circuit which essentially turns on a signal after the button has been stable for about 500us.
+* A timer - This allows you to specify a frequency at which this component will fire a single clock signal. This is used by the debouncing component for its sampling rate. This is also used by the 4-digit display to time when to transition to each digit on the display.
 
 ## Parts
 

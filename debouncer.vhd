@@ -37,7 +37,7 @@ architecture behavioral of Debouncer is
 	
 	signal sample_tick : std_logic;
 	signal sync : std_logic_vector(1 downto 0);
-	signal sample_count : integer range 0 to SAMPLE_COUNT;
+	signal sample_counter : integer range 0 to SAMPLE_COUNT;
 begin
 	sample_clock: Timer
 		generic map(
@@ -55,19 +55,19 @@ begin
 		if clock'event and clock = '1' then
 			if reset = '1' then
 				sync <= (others => '0');
-				sample_count <= 0;
+				sample_counter <= 0;
 				d_out <= '0';
 			else
 				sync <= sync(0) & d_in;
 				
 				if sync(1) = '0' then
-					sample_count <= 0;
+					sample_counter <= 0;
 					d_out <= '0';
 				elsif sample_tick = '1' then
-					if sample_count = SAMPLE_COUNT then
+					if sample_counter = SAMPLE_COUNT then
 						d_out <= '1';
 					else
-						sample_count <= sample_count + 1;
+						sample_counter <= sample_counter + 1;
 					end if;
 				end if;
 			end if;

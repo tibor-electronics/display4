@@ -119,6 +119,7 @@ begin
 	-- activate current digit on display
 	activate_digit: process(clock, digit_index)
 	begin
+		-- TODO: use generic mux which will probably require an enable signal as well
 		if clock'event and clock = '1' then
 			case digit_index is
 				when 0 => sel <= "0001";

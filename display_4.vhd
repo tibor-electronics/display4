@@ -13,7 +13,7 @@ entity Display4 is
 	);
 	port(
 		clock: in std_logic;
-		DWE: in std_logic;
+		data_write_enable: in std_logic;
 		data: in std_logic_vector(DIGIT_COUNT * 4 - 1 downto 0);
 		dps: in std_logic_vector(DIGIT_COUNT - 1 downto 0);
 		segments: out std_logic_vector(6 downto 0);
@@ -67,10 +67,10 @@ begin
 			tick => advance_tick
 		);
 	
-	set_registers: process(clock, DWE)
+	set_registers: process(clock, data_write_enable)
 	begin
 		if clock'event and clock = '1' then
-			if DWE = '1' then
+			if data_write_enable = '1' then
 				dataRegister <= data;
 				dpRegister <= dps;
 			end if;

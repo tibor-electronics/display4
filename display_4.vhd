@@ -61,13 +61,15 @@ architecture behavioral of Display4 is
 	signal current_value: std_logic_vector(3 downto 0) := "0000";
 	signal digit_index: integer range 0 to DIGIT_COUNT - 1;
 begin
+	-- decode nibble to 7-segment display
 	ss: SevenSegment
 		port map(
 			clock => clock,
 			num => current_value,
 			segments => segments
 		);
-	
+
+	-- timer used to time multiplex the digits in the display
 	advance_timer: Timer
 		generic map(
 			CLOCK_FREQUENCY => CLOCK_FREQUENCY,
@@ -78,7 +80,8 @@ begin
 			reset => '0',
 			tick => advance_tick
 		);
-	
+
+	-- possibly update digit data and decimal point registers
 	set_registers: process(clock, data_write_enable)
 	begin
 		if clock'event and clock = '1' then
@@ -88,7 +91,8 @@ begin
 			end if;
 		end if;
 	end process;
-	
+
+	-- update currently active digit
 	update_digit_index: process(clock)
 	begin
 		if clock'event and clock = '1' then
@@ -97,8 +101,9 @@ begin
 			end if;
 		end if;
 	end process;
-	
-	display: process(clock, digit_index)
+
+	-- update current value based on current digit index
+	update_current_value: process(clock, digit_index)
 		variable top: integer;
 	begin
 		if clock'event and clock = '1' then
@@ -108,8 +113,13 @@ begin
 			
 			-- grab slice for the current digit
 			current_value <= digit_data_register(top downto top - 3);
-			
-			-- activate digit
+		end if;
+	end process;
+
+	-- activate current digit on display
+	activate_digit: process(clock, digit_index)
+	begin
+		if clock'event and clock = '1' then
 			case digit_index is
 				when 0 => sel <= "0001";
 				when 1 => sel <= "0010";
@@ -117,8 +127,13 @@ begin
 				when 3 => sel <= "1000";
 				when others => sel <= "0000";
 			end case;
-			
-			-- activate decimal point
+		end if;
+	end process;
+
+	-- activate decimal point for current digit
+	activate_decimal_point: process(clock, digit_index)
+	begin
+		if clock'event and clock = '1' then
 			dp <= not decimal_points_register(digit_index);
 		end if;
 	end process;

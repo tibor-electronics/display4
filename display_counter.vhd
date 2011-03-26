@@ -8,8 +8,13 @@ use ieee.std_logic_unsigned.all;
 
 entity DisplayCounter is
 	port(
+		-- main clock
 		clock: in std_logic;
+
+		-- rotary push button
 		A, B, PB: in std_logic;
+
+		-- 4-digit 7-segment display
 		segments: out std_logic_vector(6 downto 0);
 		dp: out std_logic;
 		sel: out std_logic_vector(3 downto 0)
@@ -17,6 +22,7 @@ entity DisplayCounter is
 end DisplayCounter;
 
 architecture Behavioral of DisplayCounter is
+	-- component for rotary-only support of rotary switch
 	component Rotary is
 		port(
 			clock: in std_logic;
@@ -27,6 +33,7 @@ architecture Behavioral of DisplayCounter is
 		);
 	end component;
 	
+	-- component to display 4 7-segment digits
 	component Display4 is
 		generic(
 			DIGIT_COUNT: positive
@@ -42,6 +49,7 @@ architecture Behavioral of DisplayCounter is
 		);
 	end component;
 	
+	-- component to debounce rotary push button
 	component Debouncer is
 		port(
 			clock: in std_logic;
@@ -51,15 +59,20 @@ architecture Behavioral of DisplayCounter is
 		);
 	end component;
 	
+	-- individual digit data and an aggregate of those values
 	subtype digitType is std_logic_vector(3 downto 0);
 	type digitTypes is array(0 to 3) of digitType;
 	signal digits: digitTypes;
 	signal display_data: std_logic_vector(15 downto 0);
 	
+	-- signals from rotary indicating rotation direction
 	signal up, down: std_logic;
+
+	-- signals to write current display data
 	signal enable_write: std_logic := '1';
 	signal active_digit: std_logic_vector(3 downto 0) := (others => '0');
 	
+	-- state tracking to detect push button edges
 	signal last_debounced: std_logic := '0';
 	signal current_debounced: std_logic := '0';
 	signal PB_debounced: std_logic := '0';
@@ -98,6 +111,7 @@ begin
 			d_out => PB_debounced
 		);
 	
+	-- concatenate individual digits into a single 16-bit value
 	update_display: process(clock, digits)
 	begin
 		if clock'event and clock = '1' then
@@ -105,13 +119,21 @@ begin
 		end if;
 	end process;
 	
-	-- update count based on rotary output
+	-- update current digit based on rotary output
+	-- update active digit which turns on that digits decimal point. Normally,
+	-- I would separate the logic for rotary and the push button into separate
+	-- processes, but since both require activation of enable_write, I decided
+	-- to combine both into a single process
 	update_counter: process(clock, up, down, PB, active_digit)
 		variable digit_index: integer range 0 to 3 := 0;
 	begin
 		if clock'event and clock = '1' then
+			-- shift last value and current value for edge detection
 			last_debounced <= current_debounced;
 			current_debounced <= PB_debounced;
+
+			-- handle increment/decrement if a digit is active; otherwise,
+			-- handle possible postive edge of push button
 			if down = '1' and active_digit /= "0000" then
 				digits(digit_index) <= digits(digit_index) - 1;
 				enable_write <= '1';
@@ -135,4 +157,3 @@ begin
 	end process;
 
 end Behavioral;
-

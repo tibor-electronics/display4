@@ -109,7 +109,7 @@ begin
 		if clock'event and clock = '1' then
 			-- digits are numbered left-to-right, but we need them right-to-left
 			-- calculate segment offsets based on (corrected) digit index
-			top := 4 * (3 - digit_index) + 3;
+			top := DIGIT_COUNT * ((DIGIT_COUNT - 1) - digit_index) + 3;
 			
 			-- grab slice for the current digit
 			current_value <= digit_data_register(top downto top - 3);

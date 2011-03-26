@@ -12,10 +12,15 @@ entity Display4 is
 		DIGIT_COUNT: positive := 4
 	);
 	port(
+		-- main clock
 		clock: in std_logic;
+
+		-- digit data, decimal point input, and write enable flag
 		data_write_enable: in std_logic;
 		data: in std_logic_vector(DIGIT_COUNT * 4 - 1 downto 0);
 		dps: in std_logic_vector(DIGIT_COUNT - 1 downto 0);
+
+		-- display and selection output
 		segments: out std_logic_vector(6 downto 0);
 		dp: out std_logic;
 		sel: out std_logic_vector(DIGIT_COUNT - 1 downto 0)
@@ -23,6 +28,7 @@ entity Display4 is
 end Display4;
 
 architecture behavioral of Display4 is
+	-- component to decode nibble to 7-segment display
 	component SevenSegment is
 		port(
 			clock: in std_logic;
@@ -31,6 +37,7 @@ architecture behavioral of Display4 is
 		);
 	end component;
 	
+	-- timer component that fires at a regular interval
 	component Timer is
 		generic(
 			CLOCK_FREQUENCY: positive;
@@ -42,17 +49,22 @@ architecture behavioral of Display4 is
 			tick: out std_logic
 		);
 	end component;
-	
-	signal dataRegister: std_logic_vector(DIGIT_COUNT * 4 - 1 downto 0) := (others => '0');
-	signal dpRegister: std_logic_vector(DIGIT_COUNT - 1 downto 0) := (others => '0');
-	signal currentNumber: std_logic_vector(3 downto 0) := "0000";
+
+	-- registers for digit data and decimal points
+	signal digit_data_register: std_logic_vector(DIGIT_COUNT * 4 - 1 downto 0) := (others => '0');
+	signal decimal_points_register: std_logic_vector(DIGIT_COUNT - 1 downto 0) := (others => '0');
+
+	-- signal indicating when the timer has expired
 	signal advance_tick: std_logic := '0';
+
+	-- the current digit index and the digit's value
+	signal current_value: std_logic_vector(3 downto 0) := "0000";
 	signal digit_index: integer range 0 to DIGIT_COUNT - 1;
 begin
 	ss: SevenSegment
 		port map(
 			clock => clock,
-			num => currentNumber,
+			num => current_value,
 			segments => segments
 		);
 	
@@ -71,8 +83,8 @@ begin
 	begin
 		if clock'event and clock = '1' then
 			if data_write_enable = '1' then
-				dataRegister <= data;
-				dpRegister <= dps;
+				digit_data_register <= data;
+				decimal_points_register <= dps;
 			end if;
 		end if;
 	end process;
@@ -95,7 +107,7 @@ begin
 			top := 4 * (3 - digit_index) + 3;
 			
 			-- grab slice for the current digit
-			currentNumber <= dataRegister(top downto top - 3);
+			current_value <= digit_data_register(top downto top - 3);
 			
 			-- activate digit
 			case digit_index is
@@ -107,7 +119,7 @@ begin
 			end case;
 			
 			-- activate decimal point
-			dp <= not dpRegister(digit_index);
+			dp <= not decimal_points_register(digit_index);
 		end if;
 	end process;
 

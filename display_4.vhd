@@ -36,7 +36,7 @@ architecture behavioral of Display4 is
 			segments: out std_logic_vector(6 downto 0)
 		);
 	end component;
-	
+
 	-- timer component that fires at a regular interval
 	component Timer is
 		generic(
@@ -110,7 +110,7 @@ begin
 			-- digits are numbered left-to-right, but we need them right-to-left
 			-- calculate segment offsets based on (corrected) digit index
 			top := DIGIT_COUNT * ((DIGIT_COUNT - 1) - digit_index) + 3;
-			
+
 			-- grab slice for the current digit
 			current_value <= digit_data_register(top downto top - 3);
 		end if;

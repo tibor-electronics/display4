@@ -32,7 +32,7 @@ architecture Behavioral of DisplayCounter is
 			dec: out std_logic
 		);
 	end component;
-	
+
 	-- component to display 4 7-segment digits
 	component Display4 is
 		generic(
@@ -48,7 +48,7 @@ architecture Behavioral of DisplayCounter is
 			sel: out std_logic_vector(DIGIT_COUNT - 1 downto 0)
 		);
 	end component;
-	
+
 	-- component to debounce rotary push button
 	component Debouncer is
 		port(
@@ -58,20 +58,20 @@ architecture Behavioral of DisplayCounter is
 			d_out: out std_logic
 		);
 	end component;
-	
+
 	-- individual digit data and an aggregate of those values
 	subtype digitType is std_logic_vector(3 downto 0);
 	type digitTypes is array(0 to 3) of digitType;
 	signal digits: digitTypes;
 	signal display_data: std_logic_vector(15 downto 0);
-	
+
 	-- signals from rotary indicating rotation direction
 	signal up, down: std_logic;
 
 	-- signals to write current display data
 	signal enable_write: std_logic := '1';
 	signal active_digit: std_logic_vector(3 downto 0) := (others => '0');
-	
+
 	-- state tracking to detect push button edges
 	signal last_debounced: std_logic := '0';
 	signal current_debounced: std_logic := '0';
@@ -86,7 +86,7 @@ begin
 			inc => up,
 			dec => down
 		);
-	
+
 	-- create 4-digit display
 	d4: Display4
 		generic map(
@@ -101,7 +101,7 @@ begin
 			dp => dp,
 			sel => sel
 		);
-	
+
 	-- create button debouncer
 	db: Debouncer
 		port map(
@@ -110,7 +110,7 @@ begin
 			d_in => not PB,
 			d_out => PB_debounced
 		);
-	
+
 	-- concatenate individual digits into a single 16-bit value
 	update_display: process(clock, digits)
 	begin
@@ -118,7 +118,7 @@ begin
 			display_data <= digits(0) & digits(1) & digits(2) & digits(3);
 		end if;
 	end process;
-	
+
 	-- update current digit based on rotary output
 	-- update active digit which turns on that digits decimal point. Normally,
 	-- I would separate the logic for rotary and the push button into separate

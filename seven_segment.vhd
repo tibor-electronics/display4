@@ -29,14 +29,14 @@ begin
 				when "0111" => segments <= "1111000";
 				when "1000" => segments <= "0000000";
 				when "1001" => segments <= "0011000";
-				
+
 				when "1010" => segments <= "0001000";
 				when "1011" => segments <= "0000011";
 				when "1100" => segments <= "1000110";
 				when "1101" => segments <= "0100001";
 				when "1110" => segments <= "0000110";
 				when "1111" => segments <= "0001110";
-				
+
 				when others => segments <= "1111111";
 			end case;
 		end if;

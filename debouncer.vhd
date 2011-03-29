@@ -34,7 +34,7 @@ architecture behavioral of Debouncer is
 			tick: out std_logic
 		);
 	end component;
-	
+
 	signal sample_tick : std_logic;
 	signal sync : std_logic_vector(1 downto 0);
 	signal sample_counter : integer range 0 to SAMPLE_COUNT;
@@ -49,7 +49,7 @@ begin
 			reset => reset,
 			tick => sample_tick
 		);
-	
+
 	debounce: process(clock)
 	begin
 		if clock'event and clock = '1' then
@@ -59,7 +59,7 @@ begin
 				d_out <= '0';
 			else
 				sync <= sync(0) & d_in;
-				
+
 				if sync(1) = '0' then
 					sample_counter <= 0;
 					d_out <= '0';
